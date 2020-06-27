@@ -56,6 +56,7 @@ class Cwebp extends AbstractConverter
     private static $suppliedBinariesInfo = [
         'WINNT' => [
             ['cwebp-103-windows-x64.exe', 'b3aaab03ca587e887f11f6ae612293d034ee04f4f7f6bc7a175321bb47a10169'],
+            ['cwebp-110-windows-x64-unicode.exe', 'e621286ef0b0235fce7c678a6c91362d821adaa4948d11adb6fd77e573ff1b34']
         ],
         'Darwin' => [
             ['cwebp-103-mac-10_14', '7332ed5f0d4091e2379b1eaa32a764f8c0d51b7926996a1dc8b4ef4e3c441a12'],
