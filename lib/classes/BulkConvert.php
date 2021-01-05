@@ -2,12 +2,13 @@
 
 namespace WebPExpress;
 
+use \Onnov\DetectEncoding\EncodingDetector;
+
 class BulkConvert
 {
 
     public static function getList($config)
     {
-
 
         /*
         isUploadDirMovedOutOfWPContentDir
@@ -15,7 +16,6 @@ class BulkConvert
         isPluginDirMovedOutOfAbsPath
         isPluginDirMovedOutOfWpContent
         isWPContentDirMovedOutOfAbsPath */
-
 
         $listOptions = [
             //'root' => Paths::getUploadDirAbs(),
@@ -29,10 +29,9 @@ class BulkConvert
                 'only-converted' => false,
                 'only-unconverted' => true,
                 'image-types' => $config['image-types'],
-            ]
+            ],
+            'flattenList' => true,
         ];
-
-        //$dirs = $config['scope'];
 
         $rootIds = Paths::filterOutSubRoots($config['scope']);
 
@@ -43,54 +42,6 @@ class BulkConvert
                 'root' => Paths::getAbsDirById($rootId)
             ];
         }
-
-/*
-        if (in_array('index', $config['scope'])) {
-            if (Paths::isWPContentDirMovedOutOfAbsPath()) {
-
-            }
-        } elseif (in_array('wp-content', $config['scope'])) {
-            $dirs[] = 'wp-content';
-            if (in_array('uploads', $config['scope']) && Paths::isUploadDirMovedOutOfWPContentDir()) {
-                $dirs[] = 'uploads';
-            }
-            if (in_array('plugins', $config['scope']) && Paths::isPluginDirMovedOutOfWpContent()) {
-                $dirs[] = 'plugins';
-            }
-            // ps: themes is always below wp-content
-        } else {
-            if (in_array('uploads', $config['scope'])) {
-                $dirs[] = 'uploads';
-            }
-            if (in_array('plugins', $config['scope'])) {
-                $dirs[] = 'plugins';
-            }
-        }
-
-/*
-        if (Paths::isUploadDirMovedOutOfWPContentDir()) {
-            $groups[] = [
-                'groupName' => 'uploads',
-                'root' => Paths::getUploadDirAbs(),
-            ];
-        }
-
-        $groups[] = [
-            'groupName' => 'themes',
-            'root' => Paths::getThemesDirAbs(),
-        ];
-
-        $groups[] = [
-            'groupName' => 'wp-content',
-            'root' => Paths::getContentDirAbs(),
-        ];
-
-        if (Paths::isPluginDirMovedOutOfWpContent()) {
-            $groups[] = [
-                'groupName' => 'plugins',
-                'root' => Paths::getPluginDirAbs(),
-            ];
-        }*/
 
         foreach ($groups as $i => &$group) {
             $listOptions['root'] = $group['root'];
@@ -136,7 +87,15 @@ class BulkConvert
             if (($filename != ".") && ($filename != "..")) {
 
                 if (@is_dir($dir . "/" . $filename)) {
-                    $results = array_merge($results, self::getListRecursively($relDir . "/" . $filename, $listOptions));
+                    if ($listOptions['flattenList']) {
+                      $results = array_merge($results, self::getListRecursively($relDir . "/" . $filename, $listOptions));
+                    } else {
+                      $results[] = [
+                        'name' => $filename,
+                        'isDir' => true,
+                        'children' =>  self::getListRecursively($relDir . "/" . $filename, $listOptions)
+                      ];
+                    }
                 } else {
                     // its a file - check if its a jpeg or png
 
@@ -187,7 +146,93 @@ class BulkConvert
                         }
 
                         if ($addThis) {
-                            $results[] = substr($relDir . "/", 2) . $filename;      // (we cut the leading "./" off with substr)
+
+                            $path = substr($relDir . "/", 2) . $filename;   // (we cut the leading "./" off with substr)
+
+                            // Check if the string can be encoded to json (if not: change it to a string that can)
+                            if (json_encode($path, JSON_UNESCAPED_UNICODE) === false) {
+                                /*
+                                json_encode failed. This means that the string was not UTF-8.
+                                Lets see if we can convert it to UTF-8.
+                                This is however tricky business (see #471)
+                                */
+
+                                $encodedToUTF8 = false;
+
+                                // First try library that claims to do better than mb_detect_encoding
+                                if (!$encodedToUTF8) {
+                                    $detector = new EncodingDetector();
+
+                                    $dectedEncoding = $detector->getEncoding($path);
+
+                                    if ($dectedEncoding !== 'utf-8') {
+                                        if (function_exists('iconv')) {
+                                            $res = iconv($dectedEncoding, 'utf-8//TRANSLIT', $path);
+                                            if ($res !== false) {
+                                                $path = $res;
+                                                $encodedToUTF8 = true;
+                                            }
+                                        }
+                                    }
+
+                                    /*
+                                    try {
+                                        // hm, we avoid iconvXtoEncoding, as it has a bug - it is in the issue queue (#5)
+                                        //$path = $detector->iconvXtoEncoding($path);
+                                        $encodedToUTF8 = true;
+                                    } catch (\Exception $e) {
+
+                                    }*/
+                                }
+
+                                // Try mb_detect_encoding
+                                if (!$encodedToUTF8) {
+                                    if (function_exists('mb_convert_encoding')) {
+                                        $encoding = mb_detect_encoding($path, mb_detect_order(), true);
+                                		if ($encoding) {
+                                			$path = mb_convert_encoding($path, 'UTF-8', $encoding);
+                                            $encodedToUTF8 = true;
+                                		}
+                                    }
+                                }
+
+                                if (!$encodedToUTF8) {
+                                    /*
+                                    We haven't yet succeeded in encoding to UTF-8.
+                                    What should we do?
+                                    1. Skip the file? (no, the user will not know about the problem then)
+                                    2. Add it anyway? (no, if this string causes problems to json_encode, then we will have
+                                          the same problem when encoding the entire list - result: an empty list)
+                                    3. Try wp_json_encode? (no, it will fall back on "wp_check_invalid_utf8", which has a number of
+                                          things we do not want)
+                                    4. Encode it to UTF-8 assuming that the string is encoded in the most common encoding (Windows-1252) ?
+                                          (yes, if we are lucky with the guess, it will work. If it is in another encoding, the conversion
+                                          will not be correct, and the user will then know about the problem. And either way, we will
+                                          have UTF-8 string, which will not break encoding of the list)
+                                    */
+
+                                    // https://stackoverflow.com/questions/6606713/json-encode-non-utf-8-strings
+                                    if (function_exists('mb_convert_encoding')) {
+                                        $path = mb_convert_encoding($path, "UTF-8", "Windows-1252");
+                                    } elseif (function_exists('iconv')) {
+                                        $path = iconv("CP1252", "UTF-8", $path);
+                                    } elseif (function_exists('utf8_encode')) {
+                                        // utf8_encode converts from ISO-8859-1 to UTF-8
+                                        $path = utf8_encode($path);
+                                    } else {
+                                        $path = '[cannot encode this filename to UTF-8]';
+                                    }
+
+                                }
+
+                            }
+                            if ($listOptions['flattenList']) {
+                              $results[] = $path;
+                            } else {
+                              $results[] = [
+                                'name' => basename($path)
+                              ];
+                            }
                         }
                     }
                 }
@@ -224,13 +269,23 @@ class BulkConvert
     public static function processAjaxListUnconvertedFiles()
     {
         if (!check_ajax_referer('webpexpress-ajax-list-unconverted-files-nonce', 'nonce', false)) {
-            wp_send_json_error('Invalid security nonce (it has probably expired - try refreshing)');
+            wp_send_json_error('The security nonce has expired. You need to reload the settings page (press F5) and try again)');
             wp_die();
         }
 
         $config = Config::loadConfigAndFix();
         $arr = self::getList($config);
-        echo json_encode($arr, JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK | JSON_PRETTY_PRINT);
+
+        // We use "wp_json_encode" rather than "json_encode" because it handles problems if there is non UTF-8 characters
+        // There should be none, as we have taken our measures, but no harm in taking extra precautions
+        $json = wp_json_encode($arr, JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        if ($json === false) {
+            // TODO: We can do better error handling than this!
+            echo '';
+        } else {
+            echo $json;
+        }
+
         wp_die();
     }
 

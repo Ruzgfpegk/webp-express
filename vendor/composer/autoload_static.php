@@ -12,9 +12,17 @@ class ComposerStaticInit16597e36dd1bfcd787ed5a8e6d908243
             'WebPConvert\\' => 12,
             'WebPConvertCloudService\\' => 24,
         ),
+        'O' => 
+        array (
+            'Onnov\\DetectEncoding\\' => 21,
+        ),
         'I' => 
         array (
             'ImageMimeTypeGuesser\\' => 21,
+        ),
+        'H' => 
+        array (
+            'HtaccessCapabilityTester\\' => 25,
         ),
         'D' => 
         array (
@@ -35,9 +43,17 @@ class ComposerStaticInit16597e36dd1bfcd787ed5a8e6d908243
         array (
             0 => __DIR__ . '/..' . '/rosell-dk/webp-convert-cloud-service/src',
         ),
+        'Onnov\\DetectEncoding\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/onnov/detect-encoding/src',
+        ),
         'ImageMimeTypeGuesser\\' => 
         array (
             0 => __DIR__ . '/..' . '/rosell-dk/image-mime-type-guesser/src',
+        ),
+        'HtaccessCapabilityTester\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/rosell-dk/htaccess-capability-tester/src',
         ),
         'DOMUtilForWebP\\' => 
         array (
@@ -148,6 +164,30 @@ class ComposerStaticInit16597e36dd1bfcd787ed5a8e6d908243
         'Composer\\Installers\\ZikulaInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/ZikulaInstaller.php',
         'DOMUtilForWebP\\ImageUrlReplacer' => __DIR__ . '/..' . '/rosell-dk/dom-util-for-webp/src/ImageUrlReplacer.php',
         'DOMUtilForWebP\\PictureTags' => __DIR__ . '/..' . '/rosell-dk/dom-util-for-webp/src/PictureTags.php',
+        'HtaccessCapabilityTester\\HtaccessCapabilityTester' => __DIR__ . '/..' . '/rosell-dk/htaccess-capability-tester/src/HtaccessCapabilityTester.php',
+        'HtaccessCapabilityTester\\HttpRequesterInterface' => __DIR__ . '/..' . '/rosell-dk/htaccess-capability-tester/src/HttpRequesterInterface.php',
+        'HtaccessCapabilityTester\\HttpResponse' => __DIR__ . '/..' . '/rosell-dk/htaccess-capability-tester/src/HttpResponse.php',
+        'HtaccessCapabilityTester\\SimpleHttpRequester' => __DIR__ . '/..' . '/rosell-dk/htaccess-capability-tester/src/SimpleHttpRequester.php',
+        'HtaccessCapabilityTester\\SimpleTestFileLineUpper' => __DIR__ . '/..' . '/rosell-dk/htaccess-capability-tester/src/SimpleTestFileLineUpper.php',
+        'HtaccessCapabilityTester\\TestFilesLineUpperInterface' => __DIR__ . '/..' . '/rosell-dk/htaccess-capability-tester/src/TestFilesLineUpperInterface.php',
+        'HtaccessCapabilityTester\\TestResult' => __DIR__ . '/..' . '/rosell-dk/htaccess-capability-tester/src/TestResult.php',
+        'HtaccessCapabilityTester\\TestResultCache' => __DIR__ . '/..' . '/rosell-dk/htaccess-capability-tester/src/TestResultCache.php',
+        'HtaccessCapabilityTester\\Testers\\AbstractTester' => __DIR__ . '/..' . '/rosell-dk/htaccess-capability-tester/src/Testers/AbstractTester.php',
+        'HtaccessCapabilityTester\\Testers\\AddTypeTester' => __DIR__ . '/..' . '/rosell-dk/htaccess-capability-tester/src/Testers/AddTypeTester.php',
+        'HtaccessCapabilityTester\\Testers\\ContentDigestTester' => __DIR__ . '/..' . '/rosell-dk/htaccess-capability-tester/src/Testers/ContentDigestTester.php',
+        'HtaccessCapabilityTester\\Testers\\CrashTester' => __DIR__ . '/..' . '/rosell-dk/htaccess-capability-tester/src/Testers/CrashTester.php',
+        'HtaccessCapabilityTester\\Testers\\CustomTester' => __DIR__ . '/..' . '/rosell-dk/htaccess-capability-tester/src/Testers/CustomTester.php',
+        'HtaccessCapabilityTester\\Testers\\DirectoryIndexTester' => __DIR__ . '/..' . '/rosell-dk/htaccess-capability-tester/src/Testers/DirectoryIndexTester.php',
+        'HtaccessCapabilityTester\\Testers\\HeaderSetTester' => __DIR__ . '/..' . '/rosell-dk/htaccess-capability-tester/src/Testers/HeaderSetTester.php',
+        'HtaccessCapabilityTester\\Testers\\Helpers\\ResponseInterpreter' => __DIR__ . '/..' . '/rosell-dk/htaccess-capability-tester/src/Testers/Helpers/ResponseInterpreter.php',
+        'HtaccessCapabilityTester\\Testers\\HtaccessEnabledTester' => __DIR__ . '/..' . '/rosell-dk/htaccess-capability-tester/src/Testers/HtaccessEnabledTester.php',
+        'HtaccessCapabilityTester\\Testers\\InnocentRequestTester' => __DIR__ . '/..' . '/rosell-dk/htaccess-capability-tester/src/Testers/InnocentRequestTester.php',
+        'HtaccessCapabilityTester\\Testers\\ModuleLoadedTester' => __DIR__ . '/..' . '/rosell-dk/htaccess-capability-tester/src/Testers/ModuleLoadedTester.php',
+        'HtaccessCapabilityTester\\Testers\\PassInfoFromRewriteToScriptThroughEnvTester' => __DIR__ . '/..' . '/rosell-dk/htaccess-capability-tester/src/Testers/PassInfoFromRewriteToScriptThroughEnvTester.php',
+        'HtaccessCapabilityTester\\Testers\\PassInfoFromRewriteToScriptThroughRequestHeaderTester' => __DIR__ . '/..' . '/rosell-dk/htaccess-capability-tester/src/Testers/PassInfoFromRewriteToScriptThroughRequestHeaderTester.php',
+        'HtaccessCapabilityTester\\Testers\\RequestHeaderTester' => __DIR__ . '/..' . '/rosell-dk/htaccess-capability-tester/src/Testers/RequestHeaderTester.php',
+        'HtaccessCapabilityTester\\Testers\\RewriteTester' => __DIR__ . '/..' . '/rosell-dk/htaccess-capability-tester/src/Testers/RewriteTester.php',
+        'HtaccessCapabilityTester\\Testers\\ServerSignatureTester' => __DIR__ . '/..' . '/rosell-dk/htaccess-capability-tester/src/Testers/ServerSignatureTester.php',
         'ImageMimeTypeGuesser\\Detectors\\AbstractDetector' => __DIR__ . '/..' . '/rosell-dk/image-mime-type-guesser/src/Detectors/AbstractDetector.php',
         'ImageMimeTypeGuesser\\Detectors\\ExifImageType' => __DIR__ . '/..' . '/rosell-dk/image-mime-type-guesser/src/Detectors/ExifImageType.php',
         'ImageMimeTypeGuesser\\Detectors\\FInfo' => __DIR__ . '/..' . '/rosell-dk/image-mime-type-guesser/src/Detectors/FInfo.php',
@@ -157,6 +197,8 @@ class ComposerStaticInit16597e36dd1bfcd787ed5a8e6d908243
         'ImageMimeTypeGuesser\\Detectors\\Stack' => __DIR__ . '/..' . '/rosell-dk/image-mime-type-guesser/src/Detectors/Stack.php',
         'ImageMimeTypeGuesser\\GuessFromExtension' => __DIR__ . '/..' . '/rosell-dk/image-mime-type-guesser/src/GuessFromExtension.php',
         'ImageMimeTypeGuesser\\ImageMimeTypeGuesser' => __DIR__ . '/..' . '/rosell-dk/image-mime-type-guesser/src/ImageMimeTypeGuesser.php',
+        'Onnov\\DetectEncoding\\CodePage' => __DIR__ . '/..' . '/onnov/detect-encoding/src/CodePage.php',
+        'Onnov\\DetectEncoding\\EncodingDetector' => __DIR__ . '/..' . '/onnov/detect-encoding/src/EncodingDetector.php',
         'WebPConvertCloudService\\AccessCheck' => __DIR__ . '/..' . '/rosell-dk/webp-convert-cloud-service/src/AccessCheck.php',
         'WebPConvertCloudService\\Serve' => __DIR__ . '/..' . '/rosell-dk/webp-convert-cloud-service/src/Serve.php',
         'WebPConvertCloudService\\WebPConvertCloudService' => __DIR__ . '/..' . '/rosell-dk/webp-convert-cloud-service/src/WebPConvertCloudService.php',
@@ -173,6 +215,7 @@ class ComposerStaticInit16597e36dd1bfcd787ed5a8e6d908243
         'WebPConvert\\Convert\\Converters\\ConverterTraits\\ExecTrait' => __DIR__ . '/..' . '/rosell-dk/webp-convert/src/Convert/Converters/ConverterTraits/ExecTrait.php',
         'WebPConvert\\Convert\\Converters\\Cwebp' => __DIR__ . '/..' . '/rosell-dk/webp-convert/src/Convert/Converters/Cwebp.php',
         'WebPConvert\\Convert\\Converters\\Ewww' => __DIR__ . '/..' . '/rosell-dk/webp-convert/src/Convert/Converters/Ewww.php',
+        'WebPConvert\\Convert\\Converters\\FFMpeg' => __DIR__ . '/..' . '/rosell-dk/webp-convert/src/Convert/Converters/FFMpeg.php',
         'WebPConvert\\Convert\\Converters\\Gd' => __DIR__ . '/..' . '/rosell-dk/webp-convert/src/Convert/Converters/Gd.php',
         'WebPConvert\\Convert\\Converters\\Gmagick' => __DIR__ . '/..' . '/rosell-dk/webp-convert/src/Convert/Converters/Gmagick.php',
         'WebPConvert\\Convert\\Converters\\GmagickBinary' => __DIR__ . '/..' . '/rosell-dk/webp-convert/src/Convert/Converters/GmagickBinary.php',
